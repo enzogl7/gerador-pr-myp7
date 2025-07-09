@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckSquare, Copy, Download, FileText, Users, Settings, RotateCcw } from 'lucide-react';
+import { CheckSquare, Copy, Download, FileText, Users, Settings, RotateCcw, GitBranch, ArrowRight } from 'lucide-react';
 
 interface ChecklistItem {
   id: string;
@@ -88,6 +88,13 @@ function App() {
     setAdditionalObservations('');
   };
 
+  const scrollToGitflow = () => {
+    const gitflowSection = document.getElementById('gitflow-section');
+    if (gitflowSection) {
+      gitflowSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const updateChecklistItem = (id: string, field: 'checked' | 'response', value: boolean | string) => {
     setChecklist(prev => prev.map(item => 
       item.id === id ? { 
@@ -164,6 +171,13 @@ Resposta: ${additionalObservations}`;
               </div>
             </div>
             <div className="flex items-center space-x-2">
+              <button
+                onClick={scrollToGitflow}
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-all duration-200"
+              >
+                <GitBranch className="w-4 h-4 mr-2" />
+                GitFlow
+              </button>
               <img 
                 src="/myp7-pdf-relatorios.png" 
                 alt="MYP-7 Logo" 
@@ -343,6 +357,135 @@ Resposta: ${additionalObservations}`;
                   <pre className="text-sm text-gray-700 whitespace-pre-wrap font-mono bg-gray-50 p-4 rounded-lg">
                     {generateChecklistText()}
                   </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* GitFlow Information Section */}
+        <div id="gitflow-section" className="mt-12">
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div className="p-6 border-b border-gray-100">
+              <div className="flex items-center space-x-3 mb-2">
+                <div className="flex items-center justify-center w-10 h-10 bg-blue-500 rounded-lg">
+                  <GitBranch className="w-6 h-6 text-white" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900">GitFlow - MYP-7</h2>
+              </div>
+              <p className="text-gray-600">Estrutura de branches e fluxo de desenvolvimento utilizado no projeto</p>
+            </div>
+            
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* MASTER */}
+                <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-lg p-5 border border-emerald-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <div className="w-3 h-3 bg-emerald-600 rounded-full shadow-sm"></div>
+                    <h3 className="text-lg font-bold text-emerald-900">MASTER</h3>
+                  </div>
+                  <p className="text-emerald-700 text-sm mb-3 leading-relaxed">
+                    Principal branch, onde fica o projeto já desenvolvido e sem bugs.
+                  </p>
+                  <div className="bg-emerald-200/70 rounded-md p-3 border border-emerald-300/50">
+                    <p className="text-xs font-mono text-emerald-900 font-medium">
+                      <strong>EX:</strong> master
+                    </p>
+                  </div>
+                </div>
+
+                {/* DEVELOPMENT */}
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-5 border border-blue-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <div className="w-3 h-3 bg-blue-600 rounded-full shadow-sm"></div>
+                    <h3 className="text-lg font-bold text-blue-900">DEVELOPMENT</h3>
+                  </div>
+                  <p className="text-blue-700 text-sm mb-3 leading-relaxed">
+                    Branch criada <strong>a partir da master</strong>, para que todas as FEATURES sejam feitas a partir dela.
+                  </p>
+                  <div className="bg-blue-200/70 rounded-md p-3 border border-blue-300/50">
+                    <p className="text-xs font-mono text-blue-900 font-medium">
+                      <strong>EX:</strong> master → development
+                    </p>
+                  </div>
+                </div>
+
+                {/* FEATURE */}
+                <div className="bg-gradient-to-br from-violet-50 to-violet-100 rounded-lg p-5 border border-violet-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <div className="w-3 h-3 bg-violet-600 rounded-full shadow-sm"></div>
+                    <h3 className="text-lg font-bold text-violet-900">FEATURE</h3>
+                  </div>
+                  <p className="text-violet-700 text-sm mb-3 leading-relaxed">
+                    Branch criada <strong>a partir da development</strong> e utilizada para fazer customizações e correções.
+                  </p>
+                  <div className="bg-violet-200/70 rounded-md p-3 border border-violet-300/50">
+                    <p className="text-xs font-mono text-violet-900 font-medium">
+                      <strong>EX:</strong> development → #10012 (Nº da tarefa)
+                    </p>
+                  </div>
+                </div>
+
+                {/* RELEASE */}
+                <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-5 border border-amber-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <div className="w-3 h-3 bg-amber-600 rounded-full shadow-sm"></div>
+                    <h3 className="text-lg font-bold text-amber-900">RELEASE</h3>
+                  </div>
+                  <p className="text-amber-700 text-sm mb-3 leading-relaxed">
+                    Branch utilizada para fazer testes de homologação e validações, criada a partir das modificações feitas na development.
+                  </p>
+                  <div className="bg-amber-200/70 rounded-md p-3 border border-amber-300/50">
+                    <p className="text-xs font-mono text-amber-900 font-medium">
+                      <strong>EX:</strong> #18.11.24_RELEASE
+                    </p>
+                  </div>
+                </div>
+
+                {/* HOT_FIX */}
+                <div className="bg-gradient-to-br from-rose-50 to-rose-100 rounded-lg p-5 border border-rose-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <div className="w-3 h-3 bg-rose-600 rounded-full shadow-sm"></div>
+                    <h3 className="text-lg font-bold text-rose-900">HOT_FIX</h3>
+                  </div>
+                  <p className="text-rose-700 text-sm mb-3 leading-relaxed">
+                    Branch utilizado para quando houver algum bug em produção.
+                  </p>
+                  <div className="bg-rose-200/70 rounded-md p-3 border border-rose-300/50">
+                    <p className="text-xs font-mono text-rose-900 font-medium">
+                      <strong>EX:</strong> 25.05.001 (exemplo) → #7584_HOTFIX (sendo #7584 o n° da tarefa)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Flow Diagram */}
+                <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg p-5 border border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <div className="w-3 h-3 bg-slate-600 rounded-full shadow-sm"></div>
+                    <h3 className="text-lg font-bold text-slate-900">FLUXO</h3>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center text-xs text-slate-700">
+                      <span className="font-mono bg-emerald-200/80 text-emerald-900 px-2 py-1 rounded border border-emerald-300/50 font-medium">master</span>
+                      <ArrowRight className="w-3 h-3 mx-2 text-slate-500" />
+                      <span className="font-mono bg-blue-200/80 text-blue-900 px-2 py-1 rounded border border-blue-300/50 font-medium">development</span>
+                    </div>
+                    <div className="flex items-center text-xs text-slate-700">
+                      <span className="font-mono bg-blue-200/80 text-blue-900 px-2 py-1 rounded border border-blue-300/50 font-medium">development</span>
+                      <ArrowRight className="w-3 h-3 mx-2 text-slate-500" />
+                      <span className="font-mono bg-violet-200/80 text-violet-900 px-2 py-1 rounded border border-violet-300/50 font-medium">feature</span>
+                    </div>
+                    <div className="flex items-center text-xs text-slate-700">
+                      <span className="font-mono bg-blue-200/80 text-blue-900 px-2 py-1 rounded border border-blue-300/50 font-medium">development</span>
+                      <ArrowRight className="w-3 h-3 mx-2 text-slate-500" />
+                      <span className="font-mono bg-amber-200/80 text-amber-900 px-2 py-1 rounded border border-amber-300/50 font-medium">release</span>
+                    </div>
+                    <div className="flex items-center text-xs text-slate-700">
+                      <span className="font-mono bg-emerald-200/80 text-emerald-900 px-2 py-1 rounded border border-emerald-300/50 font-medium">master</span>
+                      <ArrowRight className="w-3 h-3 mx-2 text-slate-500" />
+                      <span className="font-mono bg-rose-200/80 text-rose-900 px-2 py-1 rounded border border-rose-300/50 font-medium">hotfix</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
