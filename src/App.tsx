@@ -11,6 +11,7 @@ interface ChecklistItem {
 
 function App() {
   const [copySuccess, setCopySuccess] = useState(false);
+  const [branchNumber, setBranchNumber] = useState('');
   const [checklist, setChecklist] = useState<ChecklistItem[]>([
     {
       id: 'logic',
@@ -85,6 +86,7 @@ function App() {
       checked: false,
       response: ''
     })));
+    setBranchNumber('');
     setAdditionalObservations('');
   };
 
@@ -100,7 +102,6 @@ function App() {
       item.id === id ? { 
         ...item, 
         [field]: value,
-        // Clear response when unchecking the item
         ...(field === 'checked' && value === false ? { response: '' } : {})
       } : item
     ));
@@ -111,6 +112,8 @@ function App() {
 *Documentação de Desenvolvimento (Checklist do PR)*
  
 Preencha os campos abaixo antes de submeter sua Pull Request. Seja objetivo, mas claro.
+
+**Número da Branch: ${branchNumber}**
  
 ---
  
@@ -226,6 +229,33 @@ Resposta: ${additionalObservations}`;
               </div>
               
               <div className="divide-y divide-gray-100 max-h-[70vh] overflow-y-auto">
+                {/* Branch Number Field */}
+                <div className="p-6 bg-orange-50">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex-shrink-0">
+                      <div className="flex items-center justify-center w-10 h-10 bg-orange-500 rounded-lg">
+                        <GitBranch className="w-5 h-5 text-white" />
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <label htmlFor="branch-number" className="block text-lg font-semibold text-gray-900 mb-2">
+                        Número da Branch
+                      </label>
+                      <input
+                        id="branch-number"
+                        type="text"
+                        value={branchNumber}
+                        onChange={(e) => setBranchNumber(e.target.value)}
+                        placeholder="Ex: #13122, #13419_HOTFIX..."
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500"
+                      />
+                      <p className="text-sm text-gray-600 mt-2">
+                        Informe o número ou nome da branch relacionada a este PR
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
                 {checklist.map((item, index) => (
                   <div key={item.id} className="p-6 hover:bg-gray-50 transition-colors duration-200">
                     <div className="flex items-start space-x-4">
